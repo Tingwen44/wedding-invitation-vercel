@@ -258,18 +258,45 @@
             
             successMessage.style.display = 'none';
             errorMessage.style.display = 'none';
-            loadingMessage.style.display = 'block';
-            
-            submitBtn.disabled = true;
             
             try {
                 const formData = new FormData(this);
+                
+                // 验证必填字段
+                const guestName = formData.get('guest_name')?.trim();
+                const guestCount = formData.get('guest_count')?.trim();
+                const weddingLocation = formData.get('wedding_location');
+                
+                if (!guestName) {
+                    errorMessage.textContent = '✗ 请填入您的姓名';
+                    errorMessage.style.display = 'block';
+                    submitBtn.disabled = false;
+                    return;
+                }
+                
+                if (!guestCount || isNaN(parseInt(guestCount)) || parseInt(guestCount) <= 0) {
+                    errorMessage.textContent = '✗ 请填入参与人数（必须大于0）';
+                    errorMessage.style.display = 'block';
+                    submitBtn.disabled = false;
+                    return;
+                }
+                
+                if (!weddingLocation) {
+                    errorMessage.textContent = '✗ 请选择参与的婚礼地点';
+                    errorMessage.style.display = 'block';
+                    submitBtn.disabled = false;
+                    return;
+                }
+                
+                loadingMessage.style.display = 'block';
+                submitBtn.disabled = true;
+                
                 const accommodationDates = formData.getAll('accommodation_dates');
                 
                 const data = {
-                    wedding_location: formData.get('wedding_location'),
-                    guest_name: formData.get('guest_name'),
-                    guest_count: parseInt(formData.get('guest_count')) || 0,
+                    wedding_location: weddingLocation,
+                    guest_name: guestName,
+                    guest_count: parseInt(guestCount),
                     accompanying_guests: formData.get('accompanying_guests') || '',
                     accommodation_dates: accommodationDates.join(', '),
                     room_type: formData.get('room_type') || '',
