@@ -186,17 +186,13 @@
                     <label><input type="radio" name="wedding_location" value="山东诸城 - 蓝海大酒店 (05.04)" class="hidden"><div class="option-btn">山东诸城 - 蓝海大酒店 (05.04)</div></label>
                     <label><input type="radio" name="wedding_location" value="我都参加" class="hidden"><div class="option-btn">我都参加</div></label>
                 </div>
-            </div>
-
-            <div class="form-item">
+                       <div class="form-item">
                 <span class="form-label">2. 宾客信息</span>
-                <input type="text" name="guest_name" placeholder="您的姓名:" required class="mb-4">
-                <input type="number" name="guest_count" placeholder="参与人数:" min="1">
-                <input type="text" name="accompanying_guests" placeholder="参与亲友姓名:" class="mt-4">
-            </div>
-
-            <div class="form-item">
-                <span class="form-label">3. 住宿要求 (多选)</span>
+                <div class="option-group">
+                    <input type="text" name="guest_name" placeholder="您的姓名:" required>
+                    <input type="text" name="accompanying_guests" placeholder="参与亲友姓名:">
+                </div>
+            </div>          <span class="form-label">3. 住宿要求 (多选)</span>
                 <div class="option-group">
                     <label><input type="checkbox" name="accommodation_dates" value="4月30日 (晋城)" class="hidden"><div class="option-btn">4月30日 (晋城)</div></label>
                     <label><input type="checkbox" name="accommodation_dates" value="5月1日 (晋城)" class="hidden"><div class="option-btn">5月1日 (晋城)</div></label>
@@ -264,18 +260,10 @@
                 
                 // 验证必填字段
                 const guestName = formData.get('guest_name')?.trim();
-                const guestCount = formData.get('guest_count')?.trim();
                 const weddingLocation = formData.get('wedding_location');
                 
                 if (!guestName) {
                     errorMessage.textContent = '✗ 请填入您的姓名';
-                    errorMessage.style.display = 'block';
-                    submitBtn.disabled = false;
-                    return;
-                }
-                
-                if (!guestCount || isNaN(parseInt(guestCount)) || parseInt(guestCount) <= 0) {
-                    errorMessage.textContent = '✗ 请填入参与人数（必须大于0）';
                     errorMessage.style.display = 'block';
                     submitBtn.disabled = false;
                     return;
@@ -296,7 +284,6 @@
                 const data = {
                     wedding_location: weddingLocation,
                     guest_name: guestName,
-                    guest_count: parseInt(guestCount),
                     accompanying_guests: formData.get('accompanying_guests') || '',
                     accommodation_dates: accommodationDates.join(', '),
                     room_type: formData.get('room_type') || '',
